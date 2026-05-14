@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Criterios de Aceptación y Rechazo en Incoming Inspection — RK Power">
+    <title>Criterios de Aceptación y Rechazo | RK Power — Incoming Inspection</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- ═══════ SIDEBAR ═══════ -->
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo-icon">RK</div>
+            <div class="logo-text-group">
+                <span class="logo-text">QC Library</span>
+                <span class="logo-sub">RK Power</span>
+            </div>
+            <div class="mode-badge" id="modeBadge">
+                <svg class="mode-icon-view" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                <svg class="mode-icon-edit" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                <span id="modeBadgeText">Lectura</span>
+            </div>
+        </div>
+
+        <div class="nav-section">
+            <div class="nav-section-title" id="lblNavTitle1">NAVEGACIÓN</div>
+            <a href="#hero" class="nav-link active" data-section="hero">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                <span id="lblNavLink1">Inicio</span>
+            </a>
+
+            <a href="#enfoque" class="nav-link" data-section="enfoque">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+                <span id="lblNavLink2">Enfoque e Impacto</span>
+            </a>
+            <a href="#decision-flow" class="nav-link" data-section="decision-flow">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                <span id="lblNavLink3">Flujo de Decisión</span>
+            </a>
+        </div>
+
+        <div class="nav-section" id="components-nav">
+            <div class="nav-section-title" id="lblNavTitle2">COMPONENTES</div>
+            <!-- Populated by JS -->
+        </div>
+
+        <div class="nav-section">
+            <div class="nav-section-title" id="lblNavTitle3">PROTOCOLOS</div>
+            <a href="#protocol" class="nav-link" data-section="protocol">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                <span id="lblNavLink4">Nuevos Defectos</span>
+            </a>
+        </div>
+
+        <!-- Mode Toggle -->
+        <div class="nav-section mode-toggle-section">
+            <button class="btn btn-outline btn-sm mode-toggle-btn" id="btnModeToggle">
+                <svg class="mode-icon-lock" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                <svg class="mode-icon-unlock" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/></svg>
+                <span id="btnModeToggleText">Acceder como Editor</span>
+            </button>
+        </div>
+
+        <div class="sidebar-footer editor-only">
+            <button class="btn btn-gold btn-sm" id="btnAddComponent" title="Agregar nuevo componente">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Nuevo Componente
+            </button>
+            <button class="btn btn-outline btn-sm" id="btnSettings" title="Configuración">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                Configuración
+            </button>
+            <button class="btn btn-outline btn-sm" id="btnExportData" title="Exportar datos">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                Exportar JSON
+            </button>
+            <label class="btn btn-outline btn-sm" title="Importar datos">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                Importar JSON
+                <input type="file" accept=".json" id="btnImportData" hidden>
+            </label>
+        </div>
+    </nav>
+
+    <!-- Mobile Toggle -->
+    <button class="mobile-toggle" id="mobileToggle" aria-label="Abrir menú">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+
+    <!-- ═══════ MAIN CONTENT ═══════ -->
+    <main class="main-content">
+
+        <!-- ── HERO ── -->
+        <section id="hero" class="section hero-section">
+            <div class="hero-bg-pattern"></div>
+            <div class="hero-content">
+                <div class="hero-badge" id="heroBadge">RK POWER — DEPARTAMENTO DE CALIDAD</div>
+                <h1 class="hero-title"><span id="heroTitle1">Criterios de Aceptación y Rechazo</span><br><span class="gradient-text" id="heroTitle2">en Incoming Inspection</span></h1>
+                <p class="hero-subtitle" id="heroSubtitle">Biblioteca centralizada de criterios de aceptación y rechazo para los componentes críticos en recepción. Estandarización operativa con cero ambigüedad y 100% independencia de proveedores.</p>
+                <div class="hero-stats">
+                    <div class="hero-stat">
+                        <div class="hero-stat-value" id="statComponents">5</div>
+                        <div class="hero-stat-label" id="stat1Label">Componentes Críticos</div>
+                    </div>
+                    <div class="hero-stat">
+                        <div class="hero-stat-value" id="statCriteria">≥10</div>
+                        <div class="hero-stat-label" id="stat2Label">Criterios por Componente</div>
+                    </div>
+                    <div class="hero-stat">
+                        <div class="hero-stat-value" id="stat3Value">0</div>
+                        <div class="hero-stat-label" id="stat3Label">Ambigüedad</div>
+                    </div>
+                    <div class="hero-stat">
+                        <div class="hero-stat-value" id="stat4Value">19 JUN</div>
+                        <div class="hero-stat-label" id="stat4Label">Fecha Límite</div>
+                    </div>
+                </div>
+                <div class="hero-actions">
+                    <a href="#comp-hyundai" class="btn btn-gold">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+                        Explorar Biblioteca
+                    </a>
+                    <a href="#decision-flow" class="btn btn-outline">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                        Ver Flujo de Decisión
+                    </a>
+                </div>
+            </div>
+        </section>
+
+
+
+        <!-- ── ENFOQUE E IMPACTO ── -->
+        <section id="enfoque" class="section">
+            <div class="section-header">
+                <h2 class="section-title" id="secEnfoqueTitle">Enfoque e Impacto de la Biblioteca</h2>
+                <p class="section-description" id="secEnfoqueDesc">Una herramienta diseñada para eliminar la subjetividad en las decisiones de calidad y proteger la operación desde la recepción</p>
+            </div>
+
+            <!-- Enfoque -->
+            <div class="focus-grid">
+                <div class="focus-card focus-main">
+                    <div class="focus-icon">
+                        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+                    </div>
+                    <h3 id="lblFocusMainTitle">Nuestro Enfoque</h3>
+                    <p id="lblFocusMainDesc">Cada criterio en esta biblioteca responde a una pregunta específica: <strong>¿cuál es el límite técnico exacto que separa una pieza aceptable de una pieza defectuosa?</strong> No hay espacio para opiniones — solo datos medibles, herramientas calibradas y evidencia fotográfica.</p>
+                    <div class="focus-tags">
+                        <span class="focus-tag" id="lblFocusTag1">🎯 Medición Objetiva</span>
+                        <span class="focus-tag" id="lblFocusTag2">📷 Evidencia Visual</span>
+                        <span class="focus-tag" id="lblFocusTag3">⚖️ Cero Ambigüedad</span>
+                    </div>
+                </div>
+                <div class="focus-card">
+                    <div class="focus-icon small green">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                    </div>
+                    <h4 id="lblFocus1Title">Estandarización</h4>
+                    <p id="lblFocus1Desc">Todos los inspectores toman la misma decisión ante el mismo defecto, sin importar el turno o la experiencia.</p>
+                </div>
+                <div class="focus-card">
+                    <div class="focus-icon small blue">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                    </div>
+                    <h4 id="lblFocus2Title">Independencia</h4>
+                    <p id="lblFocus2Desc">Criterios propios basados en datos históricos, sin depender de manuales de proveedores externos.</p>
+                </div>
+                <div class="focus-card">
+                    <div class="focus-icon small amber">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                    </div>
+                    <h4 id="lblFocus3Title">Trazabilidad</h4>
+                    <p id="lblFocus3Desc">Cada decisión de aceptación o rechazo queda documentada con método, herramienta y criterio específico.</p>
+                </div>
+            </div>
+
+            <!-- Impacto -->
+            <div class="impact-section">
+                <h3 class="subsection-title">Impacto Operativo</h3>
+                <div class="impact-grid">
+                    <div class="impact-card" style="grid-column: 1 / -1; max-width: 480px; margin: 0 auto;">
+                        <div class="impact-value success">↑ 100%</div>
+                        <div class="impact-label">Consistencia entre inspectores</div>
+                        <p class="impact-desc">El mismo defecto produce la misma decisión, sin importar quién inspeccione.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ── DECISION FLOW ── -->
+        <section id="decision-flow" class="section">
+            <div class="section-header">
+                <h2 class="section-title" id="secFlowTitle">Anatomía de una Decisión Objetiva en Recepción</h2>
+                <p class="section-description" id="secFlowDesc">Flujo de validación: Falla recurrente → Evaluación tripartita → Veredicto inapelable</p>
+            </div>
+            <div class="flow-diagram">
+                <div class="flow-entry"><div class="flow-box entry-box"><div class="flow-box-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg></div><h3 id="lblFlowInTitle">Entrada</h3><p id="lblFlowInDesc">Falla Recurrente en Componente</p><span class="flow-example">(Ej: Revisión de baterías o motores)</span></div></div>
+                <div class="flow-arrow-down"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg></div>
+                <div class="flow-criteria">
+                    <div class="flow-box criteria-box"><div class="criteria-number">1</div><h4 id="lblFlow1Title">Herramienta de Validación Exacta</h4><p id="lblFlow1Desc">Ej: Multímetro calibrado, densímetro, termómetro infrarrojo</p></div>
+                    <div class="flow-box criteria-box"><div class="criteria-number">2</div><h4 id="lblFlow2Title">Límite Técnico Innegociable</h4><p id="lblFlow2Desc">Ej: Densidad ≥ 1.165, Voltaje ≥ 12.4V</p></div>
+                    <div class="flow-box criteria-box"><div class="criteria-number">3</div><h4 id="lblFlow3Title">Evidencia Visual</h4><p id="lblFlow3Desc">Fotografía de Pieza OK vs. Fotografía de Defecto</p></div>
+                </div>
+                <div class="flow-arrow-down"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg></div>
+                <div class="flow-results">
+                    <div class="flow-box pass-box"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg><h4 id="lblFlowPassTitle">PASA</h4><p id="lblFlowPassDesc">Aceptación Estándar</p></div>
+                    <div class="flow-box fail-box"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg><h4 id="lblFlowFailTitle">NO PASA</h4><p id="lblFlowFailDesc">Rechazo Inapelable</p></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ── COMPONENT SECTIONS (rendered by JS) ── -->
+        <div id="components-container"></div>
+
+        <!-- ── PROCEDIMIENTO NUEVOS DEFECTOS ── -->
+        <section id="protocol" class="section">
+            <div class="section-header">
+                <h2 class="section-title" id="secProtocolTitle">Procedimiento ante Defectos No Catalogados</h2>
+                <p class="section-description" id="secProtocolDesc">Flujo de acción continua para registrar y estandarizar nuevas fallas detectadas en Incoming Inspection</p>
+            </div>
+            <div class="protocol-steps">
+                <div class="protocol-step"><div class="protocol-icon warning-icon"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div><div class="protocol-label" id="lblProt1Title">[ 1 ] Aislar y Medir</div><p id="lblProt1Desc">Al detectar una anomalía ausente en la biblioteca, poner la pieza en cuarentena y determinar el límite técnico exacto que causa el rechazo.</p></div>
+                <div class="protocol-arrow"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+                <div class="protocol-step"><div class="protocol-icon discuss-icon"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></div><div class="protocol-label" id="lblProt2Title">[ 2 ] Capturar Evidencia</div><p id="lblProt2Desc">Tomar fotografías claras del defecto. Incluir la herramienta de medición en la toma y fotografiar también una pieza OK para contraste.</p></div>
+                <div class="protocol-arrow"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+                <div class="protocol-step"><div class="protocol-icon solve-icon"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></div><div class="protocol-label" id="lblProt3Title">[ 3 ] Estandarizar</div><p id="lblProt3Desc">Ingresar como Editor a la QC Library, crear el nuevo criterio con sus parámetros exactos y subir la evidencia para evitar futuras ambigüedades.</p></div>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="main-footer">
+            <div class="footer-content">
+                <div class="footer-brand"><span class="footer-rk">RK</span><span>Criterios de Aceptación y Rechazo — Incoming Inspection v2.0</span></div>
+                <div class="footer-meta"><span>RK Power Generator Corp.</span><span class="footer-divider">|</span><span>Departamento de Calidad</span></div>
+            </div>
+        </footer>
+    </main>
+
+    <!-- ═══════ MODALS ═══════ -->
+    <!-- Add/Edit Criterion Modal -->
+    <div class="modal-overlay" id="criterionModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 id="criterionModalTitle">Agregar Criterio</h3>
+                <button class="modal-close" id="criterionModalClose">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-grid">
+                    <div class="form-group full">
+                        <label>Incidencia / Defecto</label>
+                        <input type="text" id="fIncidencia" placeholder="Ej: Densidad baja del electrolito">
+                    </div>
+                    <div class="form-group">
+                        <label>Categoría del Defecto</label>
+                        <input type="text" id="fCategoria" placeholder="Ej: Falla electroquímica">
+                    </div>
+                    <div class="form-group">
+                        <label>Herramienta de Validación</label>
+                        <input type="text" id="fHerramienta" placeholder="Ej: Densímetro con escala Baumé">
+                    </div>
+                    <div class="form-group full">
+                        <label>Criterio de Aceptación</label>
+                        <textarea id="fAceptacion" rows="2" placeholder="Ej: Densidad ≥ 1.265 g/cm³ a 25°C"></textarea>
+                    </div>
+                    <div class="form-group full">
+                        <label>Criterio de Rechazo</label>
+                        <textarea id="fRechazo" rows="2" placeholder="Ej: Densidad < 1.165 g/cm³ en cualquier celda"></textarea>
+                    </div>
+                    <div class="form-group full">
+                        <label>Método de Medición</label>
+                        <textarea id="fMetodo" rows="2" placeholder="Describir el procedimiento paso a paso..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Severidad</label>
+                        <select id="fSeveridad">
+                            <option value="critical">Crítica</option>
+                            <option value="major">Mayor</option>
+                            <option value="minor">Menor</option>
+                        </select>
+                    </div>
+                </div>
+                <!-- Image Reference Section -->
+                <div class="image-section">
+                    <h4 class="image-section-title">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                        Imágenes de Referencia
+                    </h4>
+                    <div class="image-pair">
+                        <div class="image-upload-box" id="imgOkBox">
+                            <div class="image-upload-label accept-label">✓ PIEZA OK</div>
+                            <div class="image-upload-area" id="imgOkArea">
+                                <input type="file" accept="image/*" id="imgOkInput" hidden>
+                                <div class="image-placeholder" id="imgOkPlaceholder">
+                                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                                    <span>Click o arrastra imagen</span>
+                                </div>
+                                <img id="imgOkPreview" class="image-preview" alt="Pieza OK">
+                                <button class="image-remove" id="imgOkRemove" title="Eliminar imagen">&times;</button>
+                            </div>
+                            <input type="text" class="image-caption" id="imgOkCaption" placeholder="Descripción de pieza conforme...">
+                        </div>
+                        <div class="vs-divider">VS</div>
+                        <div class="image-upload-box" id="imgDefectBox">
+                            <div class="image-upload-label reject-label">✗ DEFECTO</div>
+                            <div class="image-upload-area" id="imgDefectArea">
+                                <input type="file" accept="image/*" id="imgDefectInput" hidden>
+                                <div class="image-placeholder" id="imgDefectPlaceholder">
+                                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                                    <span>Click o arrastra imagen</span>
+                                </div>
+                                <img id="imgDefectPreview" class="image-preview" alt="Defecto">
+                                <button class="image-remove" id="imgDefectRemove" title="Eliminar imagen">&times;</button>
+                            </div>
+                            <input type="text" class="image-caption" id="imgDefectCaption" placeholder="Descripción del defecto encontrado...">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline btn-sm" id="criterionModalCancel">Cancelar</button>
+                <button class="btn btn-gold btn-sm" id="criterionModalSave">Guardar Criterio</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add/Edit Component Modal -->
+    <div class="modal-overlay" id="componentModal">
+        <div class="modal modal-sm">
+            <div class="modal-header">
+                <h3 id="componentModalTitle">Nuevo Componente</h3>
+                <button class="modal-close" id="componentModalClose">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Nombre del Componente</label>
+                    <input type="text" id="fCompName" placeholder="Ej: Baterías">
+                </div>
+                <div class="form-group">
+                    <label>Descripción</label>
+                    <input type="text" id="fCompDesc" placeholder="Ej: Criterios de inspección para baterías de arranque">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline btn-sm" id="componentModalCancel">Cancelar</button>
+                <button class="btn btn-gold btn-sm" id="componentModalSave">Guardar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Image Lightbox -->
+    <div class="lightbox-overlay" id="lightbox">
+        <button class="lightbox-close" id="lightboxClose">&times;</button>
+        <div class="lightbox-content">
+            <img id="lightboxImg" src="" alt="">
+            <div class="lightbox-caption" id="lightboxCaption"></div>
+        </div>
+    </div>
+
+    <!-- Confirm Delete Modal -->
+    <div class="modal-overlay" id="confirmModal">
+        <div class="modal modal-xs">
+            <div class="modal-header"><h3>Confirmar Eliminación</h3><button class="modal-close" id="confirmModalClose">&times;</button></div>
+            <div class="modal-body"><p id="confirmMessage">¿Estás seguro de eliminar este elemento?</p></div>
+            <div class="modal-footer"><button class="btn btn-outline btn-sm" id="confirmCancel">Cancelar</button><button class="btn btn-danger btn-sm" id="confirmDelete">Eliminar</button></div>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+        <div class="modal-overlay" id="settingsModal">
+        <div class="modal" style="max-width:800px">
+            <div class="modal-header">
+                <h3>⚙️ Configuración Global</h3>
+                <button class="modal-close" id="settingsModalClose">&times;</button>
+            </div>
+            <div class="settings-tabs" style="display:flex; border-bottom:1px solid var(--surface-border); padding:0 24px; gap:16px; margin-top:10px; overflow-x:auto;">
+                <button class="settings-tab active" data-tab="st-ident">Identidad y Tema</button>
+                <button class="settings-tab" data-tab="st-hero">Inicio (Hero & Stats)</button>
+                <button class="settings-tab" data-tab="st-secciones">Textos de Secciones</button>
+                <button class="settings-tab" data-tab="st-seguridad">Seguridad</button>
+                <button class="settings-tab" data-tab="st-nav">Navegación</button>
+                <button class="settings-tab" data-tab="st-focus">Tarjetas de Enfoque</button>
+                <button class="settings-tab" data-tab="st-flow">Flujo de Decisión</button>
+                <button class="settings-tab" data-tab="st-protocol">Procedimiento</button>
+            </div>
+            <div class="modal-body" style="min-height: 450px;">
+                
+                <!-- TAB: IDENTIDAD Y TEMA -->
+                <div class="settings-tab-content active" id="st-ident">
+                    <div class="settings-section">
+                        <h4 class="settings-section-title">Logotipo (Barra Lateral)</h4>
+                        <div class="form-grid">
+                            <div class="form-group full"><label>Texto Principal</label><input type="text" id="sLogoText" placeholder="Ej: QC Library"></div>
+                            <div class="form-group"><label>Sub-texto</label><input type="text" id="sLogoSub" placeholder="Ej: RK Power"></div>
+                            <div class="form-group"><label>Iniciales (Icono)</label><input type="text" id="sLogoIcon" placeholder="Ej: RK" maxlength="3"></div>
+                        </div>
+                    </div>
+                    <div class="settings-section">
+                        <h4 class="settings-section-title">Apariencia</h4>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Tema de Fondo</label>
+                                <select id="sTheme">
+                                    <option value="dark">Oscuro (Defecto)</option>
+                                    <option value="midnight">Midnight Azul</option>
+                                    <option value="charcoal">Carbón Profundo</option>
+                                    <option value="forest">Bosque Oscuro</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Color Primario</label>
+                                <div class="color-options" id="sAccentColor">
+                                    <button class="color-swatch active" data-color="gold" style="background:linear-gradient(135deg,#EABA00,#d4a800)" title="Dorado"></button>
+                                    <button class="color-swatch" data-color="blue" style="background:linear-gradient(135deg,#3b82f6,#2563eb)" title="Azul"></button>
+                                    <button class="color-swatch" data-color="emerald" style="background:linear-gradient(135deg,#10b981,#059669)" title="Esmeralda"></button>
+                                    <button class="color-swatch" data-color="purple" style="background:linear-gradient(135deg,#8b5cf6,#7c3aed)" title="Morado"></button>
+                                    <button class="color-swatch" data-color="rose" style="background:linear-gradient(135deg,#f43f5e,#e11d48)" title="Rosa"></button>
+                                    <button class="color-swatch" data-color="orange" style="background:linear-gradient(135deg,#f97316,#ea580c)" title="Naranja"></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="settings-section">
+                        <h4 class="settings-section-title">Pie de Página</h4>
+                        <div class="form-grid">
+                            <div class="form-group full"><label>Texto Principal</label><input type="text" id="sFooterText"></div>
+                            <div class="form-group"><label>Empresa</label><input type="text" id="sFooterCompany"></div>
+                            <div class="form-group"><label>Departamento</label><input type="text" id="sFooterDept"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB: HERO -->
+                <div class="settings-tab-content" id="st-hero" style="display:none;">
+                    <div class="settings-section">
+                        <h4 class="settings-section-title">Textos de Bienvenida</h4>
+                        <div class="form-grid">
+                            <div class="form-group full"><label>Badge Superior</label><input type="text" id="sBadge"></div>
+                            <div class="form-group full"><label>Título Línea 1</label><input type="text" id="sTitle1"></div>
+                            <div class="form-group full"><label>Título Línea 2 (Resaltado)</label><input type="text" id="sTitle2"></div>
+                            <div class="form-group full"><label>Subtítulo / Descripción</label><textarea id="sSubtitle" rows="2"></textarea></div>
+                        </div>
+                    </div>
+                    <div class="settings-section">
+                        <h4 class="settings-section-title">Métricas (Stats)</h4>
+                        <div class="form-grid">
+                            <div class="form-group full" style="display:flex; align-items:center; gap:8px;">
+                                <input type="checkbox" id="sStat1Vis" style="width:auto; cursor:pointer;"> <label style="margin:0; cursor:pointer;" for="sStat1Vis">Mostrar Stat 1 (Auto-calculado)</label>
+                            </div>
+                            <div class="form-group full" style="margin-top:-10px;"><label>Stat 1 - Etiqueta</label><input type="text" id="sStat1Lbl"></div>
+                            
+                            <div class="form-group full" style="display:flex; align-items:center; gap:8px; margin-top:8px;">
+                                <input type="checkbox" id="sStat2Vis" style="width:auto; cursor:pointer;"> <label style="margin:0; cursor:pointer;" for="sStat2Vis">Mostrar Stat 2</label>
+                            </div>
+                            <div class="form-group" style="margin-top:-10px;"><label>Stat 2 - Valor</label><input type="text" id="sStat2Val"></div>
+                            <div class="form-group" style="margin-top:-10px;"><label>Stat 2 - Etiqueta</label><input type="text" id="sStat2Lbl"></div>
+                            
+                            <div class="form-group full" style="display:flex; align-items:center; gap:8px; margin-top:8px;">
+                                <input type="checkbox" id="sStat3Vis" style="width:auto; cursor:pointer;"> <label style="margin:0; cursor:pointer;" for="sStat3Vis">Mostrar Stat 3</label>
+                            </div>
+                            <div class="form-group" style="margin-top:-10px;"><label>Stat 3 - Valor</label><input type="text" id="sStat3Val"></div>
+                            <div class="form-group" style="margin-top:-10px;"><label>Stat 3 - Etiqueta</label><input type="text" id="sStat3Lbl"></div>
+                            
+                            <div class="form-group full" style="display:flex; align-items:center; gap:8px; margin-top:8px;">
+                                <input type="checkbox" id="sStat4Vis" style="width:auto; cursor:pointer;"> <label style="margin:0; cursor:pointer;" for="sStat4Vis">Mostrar Stat 4</label>
+                            </div>
+                            <div class="form-group" style="margin-top:-10px;"><label>Stat 4 - Valor</label><input type="text" id="sStat4Val"></div>
+                            <div class="form-group" style="margin-top:-10px;"><label>Stat 4 - Etiqueta</label><input type="text" id="sStat4Lbl"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB: SECCIONES -->
+                <div class="settings-tab-content" id="st-secciones" style="display:none;">
+                    <div class="settings-section">
+                        <h4 class="settings-section-title">Sección: Enfoque e Impacto</h4>
+                        <div class="form-grid">
+                            <div class="form-group full"><label>Título</label><input type="text" id="sSec1Title"></div>
+                            <div class="form-group full"><label>Descripción</label><input type="text" id="sSec1Desc"></div>
+                        </div>
+                    </div>
+                    <div class="settings-section">
+                        <h4 class="settings-section-title">Sección: Flujo de Decisión</h4>
+                        <div class="form-grid">
+                            <div class="form-group full"><label>Título</label><input type="text" id="sSec2Title"></div>
+                            <div class="form-group full"><label>Descripción</label><input type="text" id="sSec2Desc"></div>
+                        </div>
+                    </div>
+                    <div class="settings-section">
+                        <h4 class="settings-section-title">Sección: Procedimiento Nuevos Defectos</h4>
+                        <div class="form-grid">
+                            <div class="form-group full"><label>Título</label><input type="text" id="sSec3Title"></div>
+                            <div class="form-group full"><label>Descripción</label><input type="text" id="sSec3Desc"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB: SEGURIDAD -->
+                <div class="settings-tab-content" id="st-seguridad" style="display:none;">
+                    <div class="settings-section">
+                        <h4 class="settings-section-title">Contraseña de Editor</h4>
+                        <div class="form-grid">
+                            <div class="form-group"><label>Nueva Contraseña</label><input type="password" id="sNewPassword" autocomplete="new-password" placeholder="Dejar vacío para no cambiar"></div>
+                            <div class="form-group"><label>Confirmar Contraseña</label><input type="password" id="sConfirmPassword" autocomplete="new-password"></div>
+                        </div>
+                    </div>
+                    <div class="settings-danger" style="margin-top:20px; padding-top:20px; border-top:1px solid rgba(239,68,68,.2)">
+                        <button class="btn btn-outline btn-sm" id="btnResetAll" style="border-color:rgba(239,68,68,.3);color:var(--danger-400)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+                            Restaurar Valores de Fábrica
+                        </button>
+                    </div>
+                </div>
+                <!-- TAB: NAVEGACION -->
+                <div class="settings-tab-content" id="st-nav" style="display:none;">
+                    <div class="settings-section">
+                        <h4 class="settings-section-title">Títulos de Barra Lateral</h4>
+                        <div class="form-grid">
+                            <div class="form-group"><label>Sección: Navegación</label><input type="text" id="sNavTitle1"></div>
+                            <div class="form-group"><label>Sección: Componentes</label><input type="text" id="sNavTitle2"></div>
+                            <div class="form-group"><label>Sección: Protocolos</label><input type="text" id="sNavTitle3"></div>
+                            <div class="form-group"><label>Enlace: Inicio</label><input type="text" id="sNavLink1"></div>
+                            <div class="form-group"><label>Enlace: Enfoque e Impacto</label><input type="text" id="sNavLink2"></div>
+                            <div class="form-group"><label>Enlace: Flujo de Decisión</label><input type="text" id="sNavLink3"></div>
+                            <div class="form-group"><label>Enlace: Nuevos Defectos</label><input type="text" id="sNavLink4"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB: TARJETAS ENFOQUE -->
+                <div class="settings-tab-content" id="st-focus" style="display:none;">
+                    <div class="settings-section">
+                        <h4 class="settings-section-title">Tarjeta Principal</h4>
+                        <div class="form-grid">
+                            <div class="form-group full"><label>Título</label><input type="text" id="sFocusMainTitle"></div>
+                            <div class="form-group full"><label>Descripción</label><textarea id="sFocusMainDesc" rows="2"></textarea></div>
+                            <div class="form-group"><label>Tag 1</label><input type="text" id="sFocusTag1"></div>
+                            <div class="form-group"><label>Tag 2</label><input type="text" id="sFocusTag2"></div>
+                            <div class="form-group"><label>Tag 3</label><input type="text" id="sFocusTag3"></div>
+                        </div>
+                    </div>
+                    <div class="settings-section">
+                        <h4 class="settings-section-title">Tarjetas Secundarias</h4>
+                        <div class="form-grid">
+                            <div class="form-group full"><label>Tarjeta 1 - Título</label><input type="text" id="sFocus1Title"></div>
+                            <div class="form-group full"><label>Tarjeta 1 - Descripción</label><textarea id="sFocus1Desc" rows="2"></textarea></div>
+                            <div class="form-group full"><label>Tarjeta 2 - Título</label><input type="text" id="sFocus2Title"></div>
+                            <div class="form-group full"><label>Tarjeta 2 - Descripción</label><textarea id="sFocus2Desc" rows="2"></textarea></div>
+                            <div class="form-group full"><label>Tarjeta 3 - Título</label><input type="text" id="sFocus3Title"></div>
+                            <div class="form-group full"><label>Tarjeta 3 - Descripción</label><textarea id="sFocus3Desc" rows="2"></textarea></div>
+                        </div>
+                    </div>
+                </div>
+                <!-- TAB: FLUJO DE DECISION -->
+                <div class="settings-tab-content" id="st-flow" style="display:none;">
+                    <div class="settings-section">
+                        <h4 class="settings-section-title">Textos de Flujo de Decisión</h4>
+                        <div class="form-grid">
+                            <div class="form-group full"><label>Entrada Título</label><input type="text" id="sFlowInTitle"></div>
+                            <div class="form-group full"><label>Entrada Desc</</label><input type="text" id="sFlowInDesc"></div>
+                            <div class="form-group full"><label>Paso 1 Título</label><input type="text" id="sFlow1Title"></div>
+                            <div class="form-group full"><label>Paso 1 Desc</label><input type="text" id="sFlow1Desc"></div>
+                            <div class="form-group full"><label>Paso 2 Título</label><input type="text" id="sFlow2Title"></div>
+                            <div class="form-group full"><label>Paso 2 Desc</label><input type="text" id="sFlow2Desc"></div>
+                            <div class="form-group full"><label>Paso 3 Título</label><input type="text" id="sFlow3Title"></div>
+                            <div class="form-group full"><label>Paso 3 Desc</label><input type="text" id="sFlow3Desc"></div>
+                            <div class="form-group"><label>Aprobado Título</label><input type="text" id="sFlowPassTitle"></div>
+                            <div class="form-group"><label>Aprobado Desc</label><input type="text" id="sFlowPassDesc"></div>
+                            <div class="form-group"><label>Rechazado Título</label><input type="text" id="sFlowFailTitle"></div>
+                            <div class="form-group"><label>Rechazado Desc</label><input type="text" id="sFlowFailDesc"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB: PROCEDIMIENTO -->
+                <div class="settings-tab-content" id="st-protocol" style="display:none;">
+                    <div class="settings-section">
+                        <h4 class="settings-section-title">Pasos del Procedimiento</h4>
+                        <div class="form-grid">
+                            <div class="form-group full"><label>Paso 1 Título</label><input type="text" id="sProt1Title"></div>
+                            <div class="form-group full"><label>Paso 1 Desc</label><textarea id="sProt1Desc" rows="2"></textarea></div>
+                            <div class="form-group full"><label>Paso 2 Título</label><input type="text" id="sProt2Title"></div>
+                            <div class="form-group full"><label>Paso 2 Desc</label><textarea id="sProt2Desc" rows="2"></textarea></div>
+                            <div class="form-group full"><label>Paso 3 Título</label><input type="text" id="sProt3Title"></div>
+                            <div class="form-group full"><label>Paso 3 Desc</label><textarea id="sProt3Desc" rows="2"></textarea></div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline btn-sm" id="settingsCancel">Cancelar</button>
+                <button class="btn btn-gold btn-sm" id="settingsSave">Guardar Todos los Cambios</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Password Login Modal -->
+    <div class="modal-overlay" id="loginModal">
+        <div class="modal modal-xs">
+            <div class="modal-header">
+                <h3>🔐 Acceso de Editor</h3>
+                <button class="modal-close" id="loginModalClose">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p style="font-size:.85rem;color:var(--text-secondary);margin-bottom:16px;">Ingresa la contraseña de administrador para habilitar el modo de edición.</p>
+                <div class="form-group">
+                    <label>Contraseña</label>
+                    <input type="password" id="fPassword" placeholder="••••••••" autocomplete="off">
+                    <span class="login-error" id="loginError"></span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline btn-sm" id="loginCancel">Cancelar</button>
+                <button class="btn btn-gold btn-sm" id="loginSubmit">Ingresar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast"></div>
+
+    <script src="app.js?v=20260507b"></script>
+</body>
+</html>
